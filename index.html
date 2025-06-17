@@ -33,16 +33,10 @@
       object-position: bottom center;
     }
 
-    /* Custom red progress bar */
-    video::-webkit-media-controls-timeline {
-      background: transparent;
-    }
-    video::-webkit-media-controls-timeline-container {
-      background-color: transparent;
-    }
+    video::-webkit-media-controls-timeline,
     video::-webkit-media-controls-current-time-display,
     video::-webkit-media-controls-time-remaining-display {
-      color: white;
+      display: none !important;
     }
 
     .live-indicator {
@@ -204,12 +198,22 @@
     }
   }, 5000);
 
-  // Subscribe button logic
+  // Subscribe logic with persistence
   const subscribeBtn = document.getElementById("subscribeBtn");
-  subscribeBtn.addEventListener("click", () => {
+
+  function setSubscribedState() {
     subscribeBtn.innerText = "Subscribed";
     subscribeBtn.classList.add("subscribed");
     subscribeBtn.disabled = true;
+  }
+
+  if (localStorage.getItem("novaSubscribed") === "yes") {
+    setSubscribedState();
+  }
+
+  subscribeBtn.addEventListener("click", () => {
+    localStorage.setItem("novaSubscribed", "yes");
+    setSubscribedState();
   });
 </script>
 
