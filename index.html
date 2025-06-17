@@ -48,7 +48,7 @@
       width: 90%;
       max-width: 960px;
       position: relative;
-      padding-top: 56.25%; /* 16:9 ratio */
+      padding-top: 56.25%;
     }
 
     video {
@@ -60,17 +60,54 @@
       border-radius: 8px;
     }
 
-    .viewer-info {
-      margin-top: 10px;
+    .info-section {
+      width: 90%;
+      max-width: 960px;
+      margin-top: 12px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .caption {
+      font-size: 14px;
+      color: #bbb;
+      margin-top: 6px;
+    }
+
+    .stats {
+      margin-top: 8px;
       font-size: 14px;
       color: #ccc;
     }
 
-    @media (max-width: 768px) {
-      .header {
-        font-size: 18px;
-        padding: 10px 15px;
-      }
+    .chat-section {
+      width: 90%;
+      max-width: 960px;
+      margin-top: 20px;
+      background: #111;
+      border-radius: 10px;
+      padding: 10px;
+    }
+
+    .chat-box {
+      max-height: 220px;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .chat-message {
+      margin: 6px 0;
+      background: #222;
+      padding: 6px 10px;
+      border-radius: 8px;
+    }
+
+    .chat-message span {
+      font-weight: bold;
+      color: #16a34a;
     }
   </style>
 </head>
@@ -80,7 +117,7 @@
   NovaNET
   <div>
     <span class="live-badge">🔴 LIVE</span>
-    <span id="viewers">302 watching now</span>
+    <span id="stats">300 watching · 45 likes</span>
   </div>
 </div>
 
@@ -91,15 +128,59 @@
       Your browser does not support the video tag.
     </video>
   </div>
+
+  <div class="info-section">
+    <div class="title">Live Forex Masterclass with Nelson FX</div>
+    <div class="caption">Join us as we explore live trades, strategies, and breakdowns of market trends. Ask questions in chat!</div>
+  </div>
+
+  <div class="chat-section">
+    <div class="chat-box" id="chatBox">
+      <!-- Fake chat will appear here -->
+    </div>
+  </div>
 </div>
 
 <script>
-  // Optional: Fake viewer count updater
-  const viewers = document.getElementById("viewers");
+  const stats = document.getElementById("stats");
+  let views = 300;
+  let likes = 45;
+
   setInterval(() => {
-    const random = Math.floor(250 + Math.random() * 100);
-    viewers.textContent = `${random} watching now`;
+    views += Math.floor(Math.random() * 5);
+    likes += Math.random() > 0.7 ? 1 : 0;
+    stats.textContent = `${views} watching · ${likes} likes`;
   }, 5000);
+
+  const chatBox = document.getElementById("chatBox");
+  const fakeChats = [
+    { name: "NelimaFX", text: "USD/JPY is setting up nicely 🔥" },
+    { name: "JackTrades", text: "Thanks for this breakdown bro 👏" },
+    { name: "Judith", text: "Can we get the link to the next session?" },
+    { name: "Peter", text: "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥" },
+    { name: "Doreen", text: "What's your stop loss setup here?" },
+    { name: "Abdi", text: "Just made 50 pips on that drop 💥" },
+    { name: "Lucy", text: "This stream is on fire. Thank you!" },
+    { name: "Mark", text: "Please repeat the last point about entries" }
+  ];
+
+  let currentChatIndex = 0;
+
+  function addChatMessage() {
+    if (currentChatIndex >= fakeChats.length) currentChatIndex = 0;
+    const chat = fakeChats[currentChatIndex++];
+    const div = document.createElement("div");
+    div.className = "chat-message";
+    div.innerHTML = `<span>${chat.name}:</span> ${chat.text}`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+  }
+
+  // Start fake chat rollout
+  setInterval(addChatMessage, 30000); // every 30 seconds
+  setTimeout(() => {
+    for (let i = 0; i < 3; i++) addChatMessage(); // preload first chats
+  }, 2000);
 </script>
 
 </body>
