@@ -1,130 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NovaTube Live</title>
+  <script src="https://cdn.jsdelivr.net/npm/peerjs@1.4.7/dist/peerjs.min.js"></script>
   <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #000; color: white; }
-    header {
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
       background: #0f0f0f;
+      color: white;
+    }
+    .header {
+      background: #202020;
       padding: 10px 20px;
       display: flex;
+      justify-content: space-between;
       align-items: center;
       position: fixed;
       width: 100%;
       top: 0;
-      z-index: 10;
+      z-index: 999;
     }
-    .logo { color: red; font-weight: bold; font-size: 22px; }
-    .live-tag { background: red; color: white; font-size: 12px; padding: 2px 6px; border-radius: 4px; margin-left: 10px; }
-    .subscribe-btn {
-      background: #cc0000; color: white; border: none;
-      padding: 6px 14px; border-radius: 20px;
-      margin-left: auto; cursor: pointer;
+    .live-tag {
+      color: red;
+      font-weight: bold;
+      font-size: 12px;
+      margin-left: 5px;
     }
-    .subscribed { background: gray !important; }
-    .main {
+    .container {
       display: flex;
-      margin-top: 60px;
-      padding: 20px;
+      padding-top: 60px;
     }
-    .video-container {
+    .video-section {
       flex: 3;
-      position: relative;
+      background: black;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    video {
+    .video-section video {
       width: 100%;
-      max-height: 80vh;
+      height: 100%;
       object-fit: cover;
     }
-    .viewer-data {
-      margin-top: 10px;
-      font-size: 14px;
-      color: #aaa;
-    }
-    .chat-container {
+    .chat-section {
       flex: 1;
-      margin-left: 20px;
-      background: #1f1f1f;
-      border-radius: 8px;
+      max-width: 400px;
+      background: #1e1e1e;
       padding: 10px;
-      max-height: 80vh;
-      overflow-y: auto;
+      border-left: 1px solid #333;
+      display: flex;
+      flex-direction: column;
     }
-    .chat-message { margin-bottom: 10px; font-size: 13px; }
-    .chat-message span { font-weight: bold; color: #c4302b; }
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    .chat-msg {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+    .views-likes {
+      font-size: 13px;
+      margin: 5px 0;
+    }
+    .subscribe {
+      background: red;
+      color: white;
+      padding: 6px 14px;
+      border: none;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .subscribe.subscribed {
+      background: gray;
+      cursor: default;
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">NovaTube</div>
-    <div class="live-tag">LIVE</div>
-    <button class="subscribe-btn" onclick="toggleSubscribe()" id="subBtn">Subscribe</button>
-  </header>
-
-  <div class="main">
-    <div class="video-container">
-      <video id="screenVideo" autoplay muted playsinline></video>
-      <div class="viewer-data">
-        <span id="views">🔴 0 watching</span>
-        <span id="likes" style="margin-left: 20px;">👍 0 likes</span>
-      </div>
+  <div class="header">
+    <div><strong>NovaTube Live</strong><span class="live-tag">● LIVE</span></div>
+    <div>
+      <span id="views">0 views</span> |
+      <span id="likes">0 likes</span> |
+      <button id="subscribeBtn" class="subscribe">Subscribe</button>
     </div>
-    <div class="chat-container" id="chatBox">
-      <h4 style="margin-bottom: 10px;">Live Chat</h4>
+  </div>
+
+  <div class="container">
+    <div class="video-section">
+      <video id="remoteVideo" autoplay playsinline></video>
+    </div>
+    <div class="chat-section">
+      <div class="chat-box" id="chatBox"></div>
     </div>
   </div>
 
   <script>
-    // Subscribe Button Persistence
-    const subBtn = document.getElementById("subBtn");
-    if (localStorage.getItem("subscribed")) {
-      subBtn.classList.add("subscribed");
-      subBtn.innerText = "Subscribed";
-    }
-    function toggleSubscribe() {
-      subBtn.classList.add("subscribed");
-      subBtn.innerText = "Subscribed";
-      localStorage.setItem("subscribed", true);
-    }
+    const viewerId = `viewer-${Math.floor(Math.random() * 10000)}`;
+    const peer = new Peer(viewerId);
+    const video = document.getElementById("remoteVideo");
 
-    // Screen Share (Broadcaster side only)
-    async function startScreenShare() {
-      const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
-      const video = document.getElementById("screenVideo");
-      video.srcObject = stream;
-    }
-    startScreenShare();
+    peer.on("open", id => {
+      const conn = peer.connect("broadcaster");
+    });
 
-    // Auto-increment Views and Likes
-    let views = 0, likes = 0;
+    peer.on("call", call => {
+      call.answer();
+      call.on("stream", stream => {
+        video.srcObject = stream;
+      });
+    });
+
+    // Simulated views and likes
+    let views = Math.floor(Math.random() * 1000) + 1;
+    let likes = Math.floor(Math.random() * 100);
+    document.getElementById("views").innerText = `${views} views`;
+    document.getElementById("likes").innerText = `${likes} likes`;
     setInterval(() => {
-      views += Math.floor(Math.random() * 3) + 1;
-      document.getElementById("views").innerText = `🔴 ${views} watching`;
+      views += Math.floor(Math.random() * 5);
+      document.getElementById("views").innerText = `${views} views`;
     }, 2000);
     setInterval(() => {
-      likes += Math.random() > 0.6 ? 1 : 0;
-      document.getElementById("likes").innerText = `👍 ${likes} likes`;
+      if (Math.random() < 0.5) {
+        likes++;
+        document.getElementById("likes").innerText = `${likes} likes`;
+      }
     }, 3000);
 
-    // Auto-generate Fake Chat
-    const fakeUsers = ["Grace", "Leo", "Jack", "Chris", "Sasha", "Maya", "Victor"];
-    const fakeMessages = [
-      "This is awesome!", "Watching from Nairobi!", "Loving the stream 😍",
-      "Great quality!", "When is the next one?", "Subscribed ✅", "Wow 🔥"
+    // Fake chat
+    const messages = [
+      "This stream is 🔥",
+      "Where are you broadcasting from?",
+      "Subscribed already!",
+      "Looks amazing!",
+      "Keep going bro 💯"
     ];
-    function generateChat() {
-      const chat = document.getElementById("chatBox");
-      const el = document.createElement("div");
-      el.className = "chat-message";
-      const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
-      const msg = fakeMessages[Math.floor(Math.random() * fakeMessages.length)];
-      el.innerHTML = `<span>${user}</span>: ${msg}`;
-      chat.appendChild(el);
-      chat.scrollTop = chat.scrollHeight;
+    const chatBox = document.getElementById("chatBox");
+    function addMessage() {
+      const msg = document.createElement("div");
+      msg.className = "chat-msg";
+      msg.textContent = messages[Math.floor(Math.random() * messages.length)];
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
-    setInterval(generateChat, 30000);
+    setInterval(addMessage, 3000);
+
+    // Subscribe button
+    const subBtn = document.getElementById("subscribeBtn");
+    const subKey = "novatube_subscribed";
+    if (localStorage.getItem(subKey)) {
+      subBtn.classList.add("subscribed");
+      subBtn.textContent = "Subscribed";
+    }
+    subBtn.onclick = () => {
+      if (!localStorage.getItem(subKey)) {
+        localStorage.setItem(subKey, true);
+        subBtn.classList.add("subscribed");
+        subBtn.textContent = "Subscribed";
+      }
+    };
   </script>
 </body>
 </html>
