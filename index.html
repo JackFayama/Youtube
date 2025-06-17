@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NovaNET Live Stream</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    .header {
+      background: #111;
+      color: #16a34a;
+      padding: 10px 20px;
+      font-size: 20px;
+      font-weight: bold;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .live-badge {
+      background: red;
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-left: 10px;
+    }
+
+    .container {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-wrapper {
+      width: 90%;
+      max-width: 960px;
+      position: relative;
+      padding-top: 56.25%; /* 16:9 ratio */
+    }
+
+    video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: black;
+      border-radius: 8px;
+    }
+
+    .viewer-info {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #ccc;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        font-size: 18px;
+        padding: 10px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  NovaNET
+  <div>
+    <span class="live-badge">🔴 LIVE</span>
+    <span id="viewers">302 watching now</span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="video-wrapper">
+    <video id="liveVideo" controls autoplay muted playsinline>
+      <source src="mylive.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
+<script>
+  // Optional: Fake viewer count updater
+  const viewers = document.getElementById("viewers");
+  setInterval(() => {
+    const random = Math.floor(250 + Math.random() * 100);
+    viewers.textContent = `${random} watching now`;
+  }, 5000);
+</script>
+
+</body>
+</html>
