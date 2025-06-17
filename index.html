@@ -2,185 +2,175 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>NovaNET Live Stream</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NovaLIVE Broadcast</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #000;
-      color: #fff;
-    }
-
-    .header {
-      background: #111;
-      color: #16a34a;
-      padding: 10px 20px;
-      font-size: 20px;
-      font-weight: bold;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .live-badge {
-      background: red;
+      font-family: 'Roboto', sans-serif;
+      background: #0f0f0f;
       color: white;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      margin-left: 10px;
     }
 
     .container {
-      margin-top: 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .video-wrapper {
-      width: 90%;
       max-width: 960px;
-      position: relative;
-      padding-top: 56.25%;
-    }
-
-    video {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: black;
-      border-radius: 8px;
-    }
-
-    .info-section {
-      width: 90%;
-      max-width: 960px;
-      margin-top: 12px;
-    }
-
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-    }
-
-    .caption {
-      font-size: 14px;
-      color: #bbb;
-      margin-top: 6px;
-    }
-
-    .stats {
-      margin-top: 8px;
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    .chat-section {
-      width: 90%;
-      max-width: 960px;
-      margin-top: 20px;
-      background: #111;
-      border-radius: 10px;
+      margin: auto;
       padding: 10px;
     }
 
-    .chat-box {
-      max-height: 220px;
-      overflow-y: auto;
-      padding-right: 10px;
+    .video-box {
+      position: relative;
+      background: black;
+      aspect-ratio: 16/9;
+      overflow: hidden;
     }
 
-    .chat-message {
-      margin: 6px 0;
-      background: #222;
-      padding: 6px 10px;
-      border-radius: 8px;
+    video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: bottom center;
     }
 
-    .chat-message span {
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 12px 0 4px;
+    }
+
+    .channel-box {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .channel-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: url('https://yt3.googleusercontent.com/ytc/AGIKgqNTiFo6vwKURCgKDmXzzrAfvlhzQeAJ_j7mUJGg=s48-c-k-c0x00ffffff-no-rj') no-repeat center/cover;
+      margin-right: 10px;
+    }
+
+    .channel-info {
+      flex-grow: 1;
+    }
+
+    .channel-info div:first-child {
       font-weight: bold;
-      color: #16a34a;
     }
+
+    .subscribe-btn {
+      background: white;
+      color: black;
+      font-weight: bold;
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .stats {
+      font-size: 14px;
+      color: #aaa;
+      margin-bottom: 6px;
+    }
+
+    .hashtags {
+      color: #3ea6ff;
+      font-size: 14px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .action-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #272727;
+      padding: 6px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background: #444;
+    }
+
+    .live-tag {
+      color: red;
+      font-weight: bold;
+      margin-left: 6px;
+    }
+
   </style>
 </head>
 <body>
 
-<div class="header">
-  NovaNET
-  <div>
-    <span class="live-badge">🔴 LIVE</span>
-    <span id="stats">300 watching · 45 likes</span>
-  </div>
-</div>
-
 <div class="container">
-  <div class="video-wrapper">
-    <video id="liveVideo" controls autoplay muted playsinline>
-      <source src="WhatsApp Video 2025-06-17 at 18.58.04.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
+
+  <!-- Video Section -->
+  <div class="video-box">
+    <video autoplay muted loop>
+      <source src="your-video.mp4" type="video/mp4">
+      Your browser does not support the video.
     </video>
   </div>
 
-  <div class="info-section">
-    <div class="title">Live Forex Masterclass with Nelson FX</div>
-    <div class="caption">Join us as we explore live trades, strategies, and breakdowns of market trends. Ask questions in chat!</div>
+  <!-- Video Title -->
+  <div class="title">Nova Prime Live 🔴 <span class="live-tag">LIVE</span></div>
+
+  <!-- Channel Info -->
+  <div class="channel-box">
+    <div class="channel-logo"></div>
+    <div class="channel-info">
+      <div>Nova Prime Kenya ✔</div>
+      <div style="font-size: 12px; color: #aaa;">2.1M subscribers</div>
+    </div>
+    <button class="subscribe-btn">Subscribe</button>
   </div>
 
-  <div class="chat-section">
-    <div class="chat-box" id="chatBox">
-      <!-- Fake chat will appear here -->
-    </div>
+  <!-- Views, date -->
+  <div class="stats">
+    <span id="viewCount">235,000</span> watching now • Started streaming on Jun 7, 2025
   </div>
+
+  <!-- Hashtags -->
+  <div class="hashtags">
+    #novaprime #livestream #broadcast
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="actions">
+    <div class="action-btn">👍 <span id="likeCount">34K</span></div>
+    <div class="action-btn">👎</div>
+    <div class="action-btn">🔗 Share</div>
+    <div class="action-btn">💾 Save</div>
+  </div>
+
 </div>
 
 <script>
-  const stats = document.getElementById("stats");
-  let views = 300;
-  let likes = 45;
+  let views = 235000;
+  let likes = 34000;
 
   setInterval(() => {
-    views += Math.floor(Math.random() * 5);
-    likes += Math.random() > 0.7 ? 1 : 0;
-    stats.textContent = `${views} watching · ${likes} likes`;
-  }, 5000);
-
-  const chatBox = document.getElementById("chatBox");
-  const fakeChats = [
-    { name: "NelimaFX", text: "USD/JPY is setting up nicely 🔥" },
-    { name: "JackTrades", text: "Thanks for this breakdown bro 👏" },
-    { name: "Judith", text: "Can we get the link to the next session?" },
-    { name: "Peter", text: "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥" },
-    { name: "Doreen", text: "What's your stop loss setup here?" },
-    { name: "Abdi", text: "Just made 50 pips on that drop 💥" },
-    { name: "Lucy", text: "This stream is on fire. Thank you!" },
-    { name: "Mark", text: "Please repeat the last point about entries" }
-  ];
-
-  let currentChatIndex = 0;
-
-  function addChatMessage() {
-    if (currentChatIndex >= fakeChats.length) currentChatIndex = 0;
-    const chat = fakeChats[currentChatIndex++];
-    const div = document.createElement("div");
-    div.className = "chat-message";
-    div.innerHTML = `<span>${chat.name}:</span> ${chat.text}`;
-    chatBox.appendChild(div);
-    chatBox.scrollTop = chatBox.scrollHeight;
-  }
-
-  // Start fake chat rollout
-  setInterval(addChatMessage, 30000); // every 30 seconds
-  setTimeout(() => {
-    for (let i = 0; i < 3; i++) addChatMessage(); // preload first chats
+    views += Math.floor(Math.random() * 6 + 1);
+    document.getElementById("viewCount").innerText = views.toLocaleString();
   }, 2000);
+
+  setInterval(() => {
+    if (Math.random() < 0.6) {
+      likes++;
+      document.getElementById("likeCount").innerText = likes.toLocaleString() + "K";
+    }
+  }, 5000);
 </script>
 
 </body>
